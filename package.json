@@ -1,0 +1,17 @@
+{
+  "name": "tdd-bowling-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bowlingGame.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "babel-jest": "^25.1.0",
+    "jest": "^25.1.0"
+  }
+}
