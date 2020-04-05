@@ -17,14 +17,6 @@ const rollMany = (totalRolls, pins) => {
   }
 }
 
-test('cannot get score before game is over', () => {
-  expect(() => {game.getScore()}).toThrow('Game is not finished');
-});
-
-test('cannot role more than 10 frames', () => {
-  expect(() => {rollMany(100, 0)}).toThrow('Game is over');
-});
-
 test('can roll a game of all gutters', () => {
   rollMany(20, 0)
 
@@ -64,10 +56,10 @@ test('can handle a strike', () => {
 test('can handle a strike bonus', () => {
   game.roll(10)
   game.roll(3)
-  game.roll(3)
+  game.roll(4)
   rollMany(16, 0)
 
-  expect(game.getScore()).toEqual(22);
+  expect(game.getScore()).toEqual(24);
 });
 
 test('can handle a strike bonus with an first-roll gutter', () => {
@@ -86,4 +78,37 @@ test('can handle a strike bonus with an second-roll gutter', () => {
   rollMany(16, 0)
 
   expect(game.getScore()).toEqual(16);
+});
+
+test('can handle bonus strike frame turkey', () => {
+  rollMany(18, 0)
+  game.roll(10)
+  game.roll(10)
+  game.roll(10)
+
+  expect(game.getScore()).toEqual(50);
+});
+
+test('can handle bonus strike frames with strike in first frame', () => {
+  rollMany(18, 0)
+  game.roll(10)
+  game.roll(10)
+  game.roll(0)
+
+  expect(game.getScore()).toEqual(30);
+});
+
+test('can handle bonus strike frames with strike in second frame', () => {
+  rollMany(18, 0)
+  game.roll(10)
+  game.roll(0)
+  game.roll(10)
+
+  expect(game.getScore()).toEqual(30);
+});
+
+test('perfect game', () => {
+  rollMany(12, 10)
+
+  expect(game.getScore()).toEqual(300);
 });
