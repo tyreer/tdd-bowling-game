@@ -60,3 +60,30 @@ test('can handle a strike', () => {
 
   expect(game.getScore()).toEqual(10);
 });
+
+test('can handle a strike bonus', () => {
+  game.roll(10)
+  game.roll(3)
+  game.roll(3)
+  rollMany(16, 0)
+
+  expect(game.getScore()).toEqual(22);
+});
+
+test('can handle a strike bonus with an first-roll gutter', () => {
+  game.roll(10)
+  game.roll(0)
+  game.roll(3)
+  rollMany(16, 0)
+
+  expect(game.getScore()).toEqual(16);
+});
+
+test('can handle a strike bonus with an second-roll gutter', () => {
+  game.roll(10)
+  game.roll(3)
+  game.roll(0)
+  rollMany(16, 0)
+
+  expect(game.getScore()).toEqual(16);
+});
