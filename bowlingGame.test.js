@@ -2,6 +2,8 @@ import { Game } from './bowlingGame'
 
 let game;
 
+
+
 beforeEach(() => {
   return game = new Game()
 });
@@ -9,17 +11,21 @@ beforeEach(() => {
 const rollMany = (totalRolls, pins) => {
   let rollCount = 1;
 
-  while(rollCount <= totalRolls) {
+  while (rollCount <= totalRolls) {
     game.roll(pins);
     rollCount++;
   }
 }
 
-test('making game instance does not throw', () => {
-  expect(() => { const mockGame = new Game() }).not.toThrow();
+test('cannot get score before game is over', () => {
+  expect(() => {game.getScore()}).toThrow('Game is not finished');
 });
 
-test('can roll a game of all spares', () => {  
+test('cannot role more than 10 frames', () => {
+  expect(() => {rollMany(100, 0)}).toThrow('Game is over');
+});
+
+test('can roll a game of all gutters', () => {
   rollMany(20, 0)
 
   expect(game.getScore()).toEqual(0);
@@ -31,7 +37,6 @@ test('can roll a game of all 1s', () => {
   expect(game.getScore()).toEqual(20);
 });
 
-
 test('can handle a spare', () => {
   game.roll(5)
   game.roll(5)
@@ -40,7 +45,6 @@ test('can handle a spare', () => {
   expect(game.getScore()).toEqual(10);
 });
 
-
 test('can handle a spare bonus', () => {
   game.roll(5)
   game.roll(5)
@@ -48,4 +52,11 @@ test('can handle a spare bonus', () => {
   rollMany(17, 0)
 
   expect(game.getScore()).toEqual(16);
+});
+
+test('can handle a strike', () => {
+  game.roll(10)
+  rollMany(18, 0)
+
+  expect(game.getScore()).toEqual(10);
 });

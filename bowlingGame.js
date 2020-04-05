@@ -1,21 +1,32 @@
 export class Game {
   constructor() {
-    this.rolls = Array(20).fill(0);
-    this.currentRole = 0;
+    this.rolls = [];
+  }
+
+  isFirstRoll(rollIndex) { 
+   return rollIndex % 2 === 0;
   }
 
   roll(pinsStruck) {
-    this.rolls[this.currentRole] = pinsStruck;
-    this.currentRole++;
+    if (this.rolls.length === 20) {throw 'Game is over'}
+    this.rolls.push(pinsStruck);
+
+    const isStrike = this.isFirstRoll(this.rolls.length - 1) && pinsStruck === 10
+    
+    if(isStrike) {
+      this.rolls.push(0);
+    }
   }
 
   isSpareBonus(rollIndex) {
-    const isFirstRoll = rollIndex % 2 === 0;
+    
     const prevFrameSpare = (this.rolls[rollIndex - 2] + this.rolls[rollIndex - 1]) === 10;
-    return isFirstRoll && prevFrameSpare;    
+    return this.isFirstRoll(rollIndex) && prevFrameSpare;    
   }
 
   getScore() {
+    if (this.rolls.length < 20) {throw 'Game is not finished'}
+
     let score = 0;
     score = this.rolls.reduce((acc, cur, rollIndex) => {
       if (this.isSpareBonus(rollIndex)) {
