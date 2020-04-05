@@ -6,9 +6,12 @@ beforeEach(() => {
   return game = new Game()
 });
 
-const rollMany = (rolls, pins) => {
-  for (let i = 0; i < rolls; i++) {
-    game.roll(pins)
+const rollMany = (totalRolls, pins) => {
+  let rollCount = 1;
+
+  while(rollCount <= totalRolls) {
+    game.roll(pins);
+    rollCount++;
   }
 }
 
@@ -28,7 +31,17 @@ test('can roll a game of all 1s', () => {
   expect(game.getScore()).toEqual(20);
 });
 
+
 test('can handle a spare', () => {
+  game.roll(5)
+  game.roll(5)
+  rollMany(18, 0)
+
+  expect(game.getScore()).toEqual(10);
+});
+
+
+test('can handle a spare bonus', () => {
   game.roll(5)
   game.roll(5)
   game.roll(3)
